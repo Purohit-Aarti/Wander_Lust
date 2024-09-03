@@ -10,10 +10,10 @@ const listingSchema = new Schema({
     image: {
         type: String,
         //if the img is undefined (when no value is passed)
-        default: "https://images.unsplash.com/photo-1716221335037-13dc765ac8d0?q=80&w=1915&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        default: "https://wallup.net/wp-content/uploads/2017/03/29/486676-astronaut-sitting-space-Earth.jpg",
         //mongoosejs.com/schema/virtuals
         //when the img value is provided but empty
-        set: (v) => v === ""? "https://images.unsplash.com/photo-1716221335037-13dc765ac8d0?q=80&w=1915&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" : v,
+        set: (v) => v === ""? "https://wallup.net/wp-content/uploads/2017/03/29/486676-astronaut-sitting-space-Earth.jpg" : v,
     },
     price: Number,
     location: String,

@@ -17,10 +17,16 @@ async function main() {
 }
 
 app.set("view engine", "ejs");
+
+// to use it even from the parent directory
 app.set("views",path.join(__dirname, "views"));
+
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverrride("_method"));
 app.engine('ejs', ejsMate);
+
+// to serve static files like- css, js
+app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
     res.send("Hey, I'm Root!");
