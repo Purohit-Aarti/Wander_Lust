@@ -1,13 +1,19 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const Listing = require("./models/listing.js");
 const path = require('path');
 const methodOverrride = require("method-override");
 const ejsMate = require("ejs-mate");
-const wrapAsync = require("./utils/wrapAsyn.js");
 const ExpressError = require("./utils/ExpressError.js");
-const {listingSchema} = require("./schema.js");
+const session = require("express-session");
+const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
+
+const listingRouter = require("./routers/listing.js");
+const reviewRouter = require("./routers/review.js");
+const userRouter = require("./routers/user.js");
 
 main()
     .then(() => {
@@ -31,101 +37,40 @@ app.engine('ejs', ejsMate);
 // to serve static files like- css, js
 app.use(express.static(path.join(__dirname, "public")));
 
+const sessionOptions = {
+    secret: "mysupersecretcode",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true, // security purpose
+    },
+};
+
 app.get("/", (req, res) => {
-    res.send("Hey, I'm Root!");
+    res.send("Hey, I'm a Root!");
 });
 
-//using joi for schema validation
-const validateListing = (req, res, next) => {
-    let {error} = listingSchema.validate(req.body);
-    console.log(result);
-    if(error) {
-        let errMsg = error.details.map((ele) => ele.message).join(",");
-        next(new ExpressError(400, errMsg));
-    }
-    else {
-        next();
-    }
-}
-    
+app.use(session(sessionOptions));
+app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-// Index Route
-app.get("/listings", wrapAsync(async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index.ejs", {allListings});
-}));
-
-// New Route
-app.get("/listings/new", (req, res) => {
-    res.render("listings/new.ejs");
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
 });
 
-// Show Route
-app.get("/listings/:id", wrapAsync(async (req, res) => {
-    let {id} = req.params;
-    const listing = await Listing.findById(id);
-    res.render("listings/show.ejs", {listing});
-}));
 
-// Create Route
-app.post("/listings", validateListing, wrapAsync(async (req, res, next) => {
-    // to validate schema, if-conditions are used, i.e. a messier task!
-    // hence joi is used.
-    // if(!req.body.listing) {
-    //     next(new ExpressError(400, "send valid data for listing!"));
-    // }
-    // if(!req.body.listing.title) {
-    //     next(new ExpressError(400, "Title is required!"));
-    // }
-    // if(!req.body.listing.description) {
-    //     next(new ExpressError(400, "Description is required!"));
-    // }
-
-    
-    // receiving data in an object format
-    const newListing = new Listing(req.body.listing);
-    await newListing.save();
-    // console.log("Data was inserted");
-    res.redirect("/listings");
-
-    // receiving data in normal format
-    // let {title, description, image, price, location, country} = req.body;
-    // await Listing.insertMany({
-    //     title: title,
-    //     description: description,
-    //     image: image,
-    //     price: price,
-    //     location: location,
-    //     country: country,
-    // });
-}));
-
-// Edit Route
-app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
-    let {id} = req.params;
-    const listing = await Listing.findById(id);
-    res.render("listings/edit.ejs", {listing});
-}));
-
-// Update Route
-app.put("/listings/:id", validateListing, wrapAsync(async (req, res) => {
-    let {id} = req.params;
-    if(!req.body.listing) {
-        next(new ExpressError(400, "send valid data for listing!"));
-    }
-    await Listing.findByIdAndUpdate(id, {...req.body.listing});
-    res.redirect(`/listings/${id}`);
-}));
-
-// Delete Route
-app.delete("/listings/:id", wrapAsync(async(req, res) => {
-    let {id} = req.params;
-    let deletedListing = await Listing.findByIdAndDelete(id);
-    console.log(deletedListing);
-    res.redirect("/listings");
-}));
-
+app.use("/listings", listingRouter);
+app.use("/listings/:id/reviews", reviewRouter);
+app.use("/", userRouter);
 
 // Testing
 // app.get("/testListing", async (req, res) => {
