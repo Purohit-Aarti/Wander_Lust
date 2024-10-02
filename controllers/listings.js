@@ -40,7 +40,11 @@ module.exports.createListing = async (req, res, next) => {
     
     // receiving data in an object format
     const newListing = new Listing(req.body.listing);
+    console.log(req.body);
+    let url = req.file.path; // url from cloudinary
+    let filename = req.file.filename;
     newListing.owner = req.user._id; // logged in user will be the owner!
+    newListing.image = {url, filename};
     await newListing.save();
     req.flash("success", "New listing created");
     // console.log("Data was inserted");
@@ -65,15 +69,21 @@ module.exports.renderEditForm = async (req, res) => {
         req.flash("error", "Listing you are looking for doesn't exists!");
         res.redirect("/listings");
     }
-    res.render("listings/edit.ejs", {listing});
+    let originalImageUrl = listing.image.url;
+    originalImageUrl = originalImageUrl.replace("/upload", "/upload/h_300,w_250");
+    res.render("listings/edit.ejs", {listing, originalImageUrl});
 }
 
 module.exports.updateListing = async (req, res) => {
     let {id} = req.params;
-    if(!req.body.listing) {
-        next(new ExpressError(400, "send valid data for listing!"));
+    let listing = await Listing.findByIdAndUpdate(id, {...req.body.listing});
+
+    if(typeof req.file !== "undefined") {
+        let url = req.file.path;
+        let filename = req.file.filename;
+        listing.image = {url, filename};
+        await listing.save();
     }
-    await Listing.findByIdAndUpdate(id, {...req.body.listing});
     req.flash("success", "Listing is updated");
     res.redirect(`/listings/${id}`);
 }

@@ -13,7 +13,7 @@ module.exports.createReview = async(req, res) => {
     res.redirect(`/listings/${listing._id}`);
 }
 
-module.exports.destroyReview = async (req, res) => {
+module.exports.destroyReview = async (req, res, next) => {
     let {id, reviewId} = req.params;
     await Review.findByIdAndDelete(reviewId);
     await Listing.findByIdAndUpdate(id, {$pull: {reviews: reviewId}});

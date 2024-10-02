@@ -9,8 +9,8 @@ module.exports.isLoggedIn = (req, res, next) => {
     console.log(req.user); // if user is logged in, user info is saved here
     if(!req.isAuthenticated()) {
         req.session.redirectUrl = req.originalUrl;
-        req.flash("error", "Please log in to add a new listing!");
-        res.redirect("/login");
+        req.flash("error", "Please log in to continue!");
+        return res.redirect("/login");
     }
     next();
 };
@@ -58,6 +58,8 @@ module.exports.validateReview = (req, res, next) => {
 module.exports.isReviewAuthor = async (req, res, next) => {
     let {id, reviewId} = req.params;
     let review = await Review.findById(reviewId);
+    console.log(res.locals.currUser);
+    console.log(res.locals.currUser._id);
     if(!review.author.equals(res.locals.currUser._id)) {
         req.flash("error", "You're not the author of this review!");
         return res.redirect(`/listings/${id}`);
