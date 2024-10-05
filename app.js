@@ -89,10 +89,16 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
-    console.log(req.user);
-    res.locals.currUser = req.user;
+    if (req.user) {
+        console.log(req.user);
+        res.locals.currUser = req.user;
+    } else {
+        console.log("User is not authenticated");
+        res.locals.currUser = null;
+    }
     next();
 });
+
 
 
 app.use("/listings", listingRouter);
