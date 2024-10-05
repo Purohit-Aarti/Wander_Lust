@@ -47,6 +47,19 @@ app.engine('ejs', ejsMate);
 // to serve static files like- css, js
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    if (req.user) {
+        console.log(req.user);
+        res.locals.currUser = req.user;
+    } else {
+        console.log("User is not authenticated");
+        res.locals.currUser = null;
+    }
+    next();
+});
+
 // session storage
 const store = MongoStore.create({
     mongoUrl: dbUrl,
@@ -86,18 +99,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use((req, res, next) => {
-    res.locals.success = req.flash("success");
-    res.locals.error = req.flash("error");
-    if (req.user) {
-        console.log(req.user);
-        res.locals.currUser = req.user;
-    } else {
-        console.log("User is not authenticated");
-        res.locals.currUser = null;
-    }
-    next();
-});
+
 
 
 
