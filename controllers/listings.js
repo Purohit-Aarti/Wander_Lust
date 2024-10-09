@@ -1,4 +1,7 @@
 const Listing = require("../models/listing");
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding'); // geocoding
+const mapToken = process.env.MAP_TOKEN;
+const geocodingClient = mbxGeocoding({ accessToken: mapToken});
 
 module.exports.index = async (req, res) => {
     const allListings = await Listing.find({});
@@ -25,6 +28,11 @@ module.exports.showListing = async (req, res) => {
 }
 
 module.exports.createListing = async (req, res, next) => {
+    let response = await geocodingClient.forwardGeocode({
+        query: req.body.listing.location,
+        limit: 1,
+      }).send()
+
     // to validate schema, if-conditions are used, i.e. a messier task!
     // hence joi is used.
     // if(!req.body.listing) {
@@ -45,7 +53,9 @@ module.exports.createListing = async (req, res, next) => {
     let filename = req.file.filename;
     newListing.owner = req.user._id; // logged in user will be the owner!
     newListing.image = {url, filename};
-    await newListing.save();
+    newListing.geometry = response.body.features[0].geometry;
+    let newSavedListing =  await newListing.save();
+    console.log(newSavedListing);
     req.flash("success", "New listing created");
     // console.log("Data was inserted");
     res.redirect("/listings");
