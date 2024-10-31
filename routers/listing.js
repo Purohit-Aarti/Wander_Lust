@@ -16,6 +16,7 @@ router.route("/")
 // New Route
 router.get("/new", isLoggedIn, (ListingController.renderNewForm));
 
+
 router.route("/:id")
 .get(wrapAsync(ListingController.showListing)) // Show Route
 .put(upload.single("listing[image]"), isLoggedIn, validateListing, isOwner, wrapAsync(ListingController.updateListing)) // Update Route
@@ -25,5 +26,4 @@ router.route("/:id")
 // Edit Route
 router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(ListingController.renderEditForm)); 
 
-
-module.exports = router; 
+module.exports = router;

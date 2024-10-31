@@ -24,6 +24,21 @@
                         <input type="file" name="listing[image]" class="form-control"/>
                     </div>
                     <div class="row">
+                        <label for="category" class="form-label mt-3" >Select Category</label>
+                            <select class="form-select mb-3 col-md-6 ms-2 form-control" aria-label="Default select example" name="listing[category]">
+                                <option selected><%=listing.category %></option>
+                                <option value="Trending">Trending</option>
+                                <option value="Rooms">Rooms</option>
+                                <option value="Mountains">Mountains</option>
+                                <option value="Camping">Camping</option>
+                                <option value="Castles">Castles</option>
+                                <option value="Amazing Pools">Amazing Pools</option>
+                                <option value="Farms">Farms</option>
+                                <option value="Domes">Domes</option>
+                                <option value="Iconic Cities">Iconic Cities</option>
+                                <option value="Arctic">Arctic</option>
+                                <option value="Boats">Boats</option>
+                            </select>
                         <div class="mb-3 col-md-4">
                             <label for="price" class="form-label">Price</label>
                             <input type="number" name="listing[price]" value="<%= listing.price %>"

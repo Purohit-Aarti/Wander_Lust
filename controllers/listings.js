@@ -105,3 +105,28 @@ module.exports.destroyListing = async(req, res) => {
     req.flash("success", "Listing is deleted!");
     res.redirect("/listings");
 }
+
+
+module.exports.locationSearch = async (req, res) => {
+    try {
+        let { location } = req.params;
+        const allListings = await Listing.find({ location });
+        // console.log(allListings);
+        res.render("listings/showLocation.ejs", { allListings });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("An error occurred while rendering the page.");
+    }
+};
+
+module.exports.categorySearch = async (req, res) => {
+    try {
+        let { category } = req.params;
+        const allListings = await Listing.find({ category });
+        // console.log(allListings);
+        res.render("listings/showCategory.ejs", { allListings });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("An error occurred while rendering the page.");
+    }
+};

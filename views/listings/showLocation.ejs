@@ -1,0 +1,32 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+<% if(allListings.length == 0) { %>
+    <div class="row mt-5">
+        <div class="alert alert-danger col-6 offset-3" role="alert">
+            <h3>Destination not found! Try again</h3>
+        </div>
+        <a href="/listings" style="color: #fe424d; margin-left: 300px; text-decoration: underline;">go back to the home page</a>
+    </div>
+
+<% } else { %>
+    <h4 class="mb-4"><b><%= allListings[0].location %></b></h4>
+    <div class="row row-cols-lg-4 row-cols-md-3  row-cols-sm-2">
+        <% for(let listing of allListings) {%>
+            <a href="/listings/<%= listing._id  %>">
+                <div class="card listing-card">
+                    <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image">
+
+                    <!-- Image Effect/ Overlay Effect -->
+                    <div class="card-img-overlay"></div>
+                    
+                    <div class="card-body">
+                        <h5 class="card-title"><%= listing.title %></h5>
+                        &#8377;<%= listing.price.toLocaleString("en-IN") %> / night
+                        <i class="tax-info">&nbsp; +18% GST</i>
+                    </div>
+                </div>
+            </a>
+            <br>
+        <% } %>
+    </div> 
+<% } %>

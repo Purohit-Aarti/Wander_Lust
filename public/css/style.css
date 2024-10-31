@@ -174,16 +174,17 @@ body {
      width: 80%; 
 }
 
+
+/* main container */
+.main-container {
+    margin: 1rem;
+}
+
 /* filters */
 @media(max-width: 1030px) {
     .tax-toggle {
         margin-left: 0px !important;
     }
-}
-
-/* main container */
-.main-container {
-    margin: 1rem;
 }
 
 @media(max-width: 680px) {
@@ -197,7 +198,6 @@ body {
 .filter-icons {
     display: flex;
     overflow-x: auto;
-
 }
 
 .filter-icons::-webkit-scrollbar {

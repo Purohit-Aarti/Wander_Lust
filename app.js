@@ -17,10 +17,11 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
-
 const listingRouter = require("./routers/listing.js");
 const reviewRouter = require("./routers/review.js");
 const userRouter = require("./routers/user.js");
+const locationRouter = require("./routers/location.js");
+const categoryRouter = require("./routers/category.js");
 
 // const MONGO_URL = 'mongodb://127.0.0.1:27017/wanderlust';
 const dbUrl = process.env.ATLASDB_URL;
@@ -101,6 +102,8 @@ app.use((req, res, next) => {
 
 
 app.use("/listings", listingRouter);
+app.use("/listings/location", locationRouter);
+app.use("/listings/category", categoryRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
