@@ -45,7 +45,7 @@
 
 ## Deployed Link
 
-You can access the deployed application [here](https://wander-lust-ybcs.onrender.com/listings).
+You can access the deployed application [Wanderlust](https://wander-lust-ybcs.onrender.com/listings).
 
 ## License
 
