@@ -1,47 +1,58 @@
-## Getting started with node.js app:
 
-1) npm init -y 
+## Getting Started
 
-The command "npm init -y" is used to initialize a new Node.js project quickly. Here's a brief explanation:
+### Prerequisites
 
-- **npm:** This stands for Node Package Manager, which is the default package manager for Node.js.
-- **init:** This subcommand is used to create a new package.json file, which is essential for any Node.js project. It contains metadata about the project and lists its dependencies.
-- **-y:** This flag (short for --yes) automatically answers "yes" to all the prompts that normally appear during the initialization process. It creates a package.json file with default values.
+- Node.js
+- MongoDB
+- Cloudinary account
+- Mapbox account
 
-By running this command, you're essentially setting up a new Node.js project with a basic configuration, saving time by skipping the manual input of project details. You can always modify the package.json file later if you need to customize any of the default settings.
+### Installation
 
-2) npm i express
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/Purohit-Aarti/Wander_Lust.git
+    cd wanderlust
+    ```
 
-The command "npm i express" is used to install the Express framework in a Node.js project. Here's a brief explanation:
+2. Install dependencies:
+    ```sh
+    npm install
+    ```
 
-- **npm:** This stands for Node Package Manager, which is used to manage dependencies in Node.js projects.
-- **i:** This is shorthand for "install". It tells npm to download and install a package.
-- **express:** This is the name of the package being installed. Express is a popular web application framework for Node.js that simplifies the process of building web applications and APIs.
+3. Create a `.env` file in the root directory and add your environment variables:
+    ```env
+    CLOUD_NAME=your_cloudinary_cloud_name
+    CLOUD_API_KEY=your_cloudinary_api_key
+    CLOUD_API_SECRET=your_cloudinary_api_secret
+    MAP_TOKEN=your_mapbox_token
+    ATLASDB_URL=your_mongodb_atlas_url
+    SECRET=your_session_secret
+    ```
 
-When you run this command, npm will download the Express package and its dependencies, and add it to your project's node_modules directory. It will also update your package.json file to include Express as a dependency.
+4. Initialize the database with sample data:
+    ```sh
+    node init/index.js
+    ```
 
-This command is typically run after initializing a Node.js project with "npm init -y", as it appears to be the case in your project setup.
+5. Start the server:
+    ```sh
+    npm start
+    ```
 
-3) npm i ejs
+6. Open your browser and navigate to `http://localhost:8080`.
 
-The command "npm i ejs" is used to install the EJS (Embedded JavaScript) package in a Node.js project. Here's a brief explanation:
+## Deployed Link
 
-- **npm:** This stands for Node Package Manager, used to manage dependencies in Node.js projects.
-- **i:** This is shorthand for "install". It tells npm to download and install a package.
-- **ejs:** This is the name of the package being installed. EJS is a templating engine for JavaScript that allows you to generate HTML markup with plain JavaScript.
+You can access the deployed application [here](https://wander-lust-ybcs.onrender.com/listings).
 
-When you run this command, npm will download the EJS package and its dependencies, add it to your project's node_modules directory, and update your package.json file to include EJS as a dependency.
+## License
 
-This command is typically run after initializing a Node.js project and installing other necessary packages, as it appears to be the case in your project setup.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-4) npm i mongoose
+## Contact
 
-The command "npm i mongoose" is used to install the Mongoose package in a Node.js project. Here's a brief explanation:
+For any inquiries, please contact [Aarati](mailto:rti.raj.15nov2002@gmail.com).
 
-- **npm:** This stands for Node Package Manager, used to manage dependencies in Node.js projects.
-- **i:** This is shorthand for "install". It tells npm to download and install a package.
-- **mongoose:** This is the name of the package being installed. Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It manages relationships between data, provides schema validation, and is used to translate between objects in code and the representation of those objects in MongoDB.
-
-When you run this command, npm will download the Mongoose package and its dependencies, add it to your project's node_modules directory, and update your package.json file to include Mongoose as a dependency.
-
-This command is typically run when you're planning to use MongoDB as your database in a Node.js application. Mongoose simplifies the process of interacting with MongoDB by providing a straight-forward, schema-based solution to model your application data.
+---
